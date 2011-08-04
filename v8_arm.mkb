@@ -1,0 +1,28 @@
+#!/usr/bin/env mkb
+
+option x86
+
+subproject v8
+
+files
+{
+    ("upstream/src/arm")
+    builtins-arm.cc
+    code-stubs-arm.cc
+    codegen-arm.cc
+    constants-arm.cc
+    cpu-arm.cc
+    debug-arm.cc
+    deoptimizer-arm.cc
+    disasm-arm.cc
+    frames-arm.cc
+    full-codegen-arm.cc
+    ic-arm.cc
+    lithium-arm.cc
+    lithium-codegen-arm.cc
+    lithium-gap-resolver-arm.cc
+    macro-assembler-arm.cc
+    regexp-macro-assembler-arm.cc
+    stub-cache-arm.cc
+    assembler-arm.cc
+}

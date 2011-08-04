@@ -1,5 +1,10 @@
-#!/usr/bin/env mkb
-options lib
+options
+{
+    lib
+    arm-cpu=5t
+}
+
+target v8
 
 defines
 {
@@ -126,25 +131,6 @@ files
     extensions/gc-extension.cc
     extensions/externalize-string-extension.cc
     snapshot-empty.cc
-
-    ("upstream/src/ia32")
-    assembler-ia32.cc
-    builtins-ia32.cc
-    code-stubs-ia32.cc
-    codegen-ia32.cc
-    cpu-ia32.cc
-    debug-ia32.cc
-    deoptimizer-ia32.cc
-    disasm-ia32.cc
-    frames-ia32.cc
-    full-codegen-ia32.cc
-    ic-ia32.cc
-    lithium-codegen-ia32.cc
-    lithium-gap-resolver-ia32.cc
-    lithium-ia32.cc
-    macro-assembler-ia32.cc
-    regexp-macro-assembler-ia32.cc
-    stub-cache-ia32.cc
 }
 
 if {{ defined ENABLE_DEBUGGER_SUPPORT }}
@@ -157,4 +143,3 @@ if {{ defined ENABLE_DEBUGGER_SUPPORT }}
         regexp-macro-assembler-tracer.cc
     }
 }
-

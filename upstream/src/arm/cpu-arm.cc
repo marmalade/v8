@@ -26,7 +26,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // CPU specific code for arm independent of OS goes here.
-#ifdef __arm__
+#if defined __arm__ && !defined __S3E__
 #include <sys/syscall.h>  // for cache flushing.
 #endif
 
@@ -64,7 +64,7 @@ void CPU::FlushICache(void* start, size_t size) {
   // None of this code ends up in the snapshot so there are no issues
   // around whether or not to generate the code when building snapshots.
   Simulator::FlushICache(Isolate::Current()->simulator_i_cache(), start, size);
-#else
+#elif !defined __S3E__
   // Ideally, we would call
   //   syscall(__ARM_NR_cacheflush, start,
   //           reinterpret_cast<intptr_t>(start) + size, 0);
