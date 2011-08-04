@@ -1,0 +1,160 @@
+#!/usr/bin/env mkb
+options lib
+
+defines
+{
+    ENABLE_DEBUGGER_SUPPORT
+    S3E_NO_INLINE
+}
+
+includepath
+{
+    "upstream/src"
+}
+
+options
+{
+    preinclude=preinclude.h
+}
+
+files
+{
+    v8.defines.txt
+
+    libraries.cc
+    experimental-libraries.cc
+
+    ("upstream/src")
+    accessors.cc
+    allocation.cc
+    api.cc
+    assembler.cc
+    ast.cc
+    atomicops_internals_x86_gcc.cc
+    bignum.cc
+    bignum-dtoa.cc
+    bootstrapper.cc
+    builtins.cc
+    cached-powers.cc
+    checks.cc
+    circular-queue.cc
+    code-stubs.cc
+    codegen.cc
+    compilation-cache.cc
+    compiler.cc
+    contexts.cc
+    conversions.cc
+    counters.cc
+    cpu-profiler.cc
+    data-flow.cc
+    dateparser.cc
+    debug-agent.cc
+    debug.cc
+    deoptimizer.cc
+    disassembler.cc
+    diy-fp.cc
+    dtoa.cc
+    execution.cc
+    factory.cc
+    flags.cc
+    frames.cc
+    full-codegen.cc
+    func-name-inferrer.cc
+    gdb-jit.cc
+    global-handles.cc
+    fast-dtoa.cc
+    fixed-dtoa.cc
+    handles.cc
+    hashmap.cc
+    heap-profiler.cc
+    heap.cc
+    hydrogen.cc
+    hydrogen-instructions.cc
+    ic.cc
+    inspector.cc
+    interpreter-irregexp.cc
+    isolate.cc
+    jsregexp.cc
+    lithium-allocator.cc
+    lithium.cc
+    liveedit.cc
+    liveobjectlist.cc
+    log-utils.cc
+    log.cc
+    mark-compact.cc
+    messages.cc
+    objects.cc
+    objects-printer.cc
+    objects-visiting.cc
+    parser.cc
+    preparser.cc
+    preparse-data.cc
+    profile-generator.cc
+    property.cc
+    regexp-macro-assembler-irregexp.cc
+    regexp-macro-assembler.cc
+    regexp-stack.cc
+    rewriter.cc
+    runtime.cc
+    runtime-profiler.cc
+    safepoint-table.cc
+    scanner-base.cc
+    scanner.cc
+    scopeinfo.cc
+    scopes.cc
+    serialize.cc
+    snapshot-common.cc
+    spaces.cc
+    string-search.cc
+    string-stream.cc
+    strtod.cc
+    stub-cache.cc
+    token.cc
+    type-info.cc
+    unicode.cc
+    utils.cc
+    v8-counters.cc
+    v8.cc
+    v8conversions.cc
+    v8threads.cc
+    v8utils.cc
+    variables.cc
+    version.cc
+    zone.cc
+    platform-linux.cc
+    platform-posix.cc
+    extensions/gc-extension.cc
+    extensions/externalize-string-extension.cc
+    snapshot-empty.cc
+
+    ("upstream/src/ia32")
+    assembler-ia32.cc
+    builtins-ia32.cc
+    code-stubs-ia32.cc
+    codegen-ia32.cc
+    cpu-ia32.cc
+    debug-ia32.cc
+    deoptimizer-ia32.cc
+    disasm-ia32.cc
+    frames-ia32.cc
+    full-codegen-ia32.cc
+    ic-ia32.cc
+    lithium-codegen-ia32.cc
+    lithium-gap-resolver-ia32.cc
+    lithium-ia32.cc
+    macro-assembler-ia32.cc
+    regexp-macro-assembler-ia32.cc
+    stub-cache-ia32.cc
+}
+
+if {{ defined ENABLE_DEBUGGER_SUPPORT }}
+{
+    files
+    {
+        ("upstream/src")
+        objects-debug.cc
+        prettyprinter.cc
+        regexp-macro-assembler-tracer.cc
+    }
+}
+

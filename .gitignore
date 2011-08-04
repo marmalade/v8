@@ -1,0 +1,11 @@
+build_*_*
+upstream
+*.mdev
+*.msrc
+lib
+run_shell.py
+data/app.config.txt
+iwtrace.txt
+data/development.icf
+run.gdb
+data-ram

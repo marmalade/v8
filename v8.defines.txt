@@ -1,0 +1,1 @@
+ENABLE_DEBUGGER_SUPPORT enable debugger support

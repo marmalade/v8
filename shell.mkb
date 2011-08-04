@@ -1,0 +1,12 @@
+#!/usr/bin/env mkb
+library ".,v8"
+
+define S3E_NO_INLINE
+
+includepath "upstream/include"
+
+files
+{
+    ("upstream/samples")
+    shell.cc
+}

@@ -34,7 +34,9 @@
 #include <sys/prctl.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+#ifndef __S3E__
 #include <sys/syscall.h>
+#endif
 #include <sys/types.h>
 #include <stdlib.h>
 
@@ -79,6 +81,9 @@ static Mutex* limit_mutex = NULL;
 
 
 static void* GetRandomMmapAddr() {
+#ifdef __S3E__
+  return 0;
+#endif
   Isolate* isolate = Isolate::UncheckedCurrent();
   // Note that the current isolate isn't set up in a call path via
   // CpuFeatures::Probe. We don't care about randomization in this case because
@@ -337,20 +342,28 @@ void OS::ReleaseStore(volatile AtomicWord* ptr, AtomicWord value) {
 
 
 const char* OS::LocalTimezone(double time) {
+#ifdef __S3E__
+  return tzname[0];
+#else
   if (isnan(time)) return "";
   time_t tv = static_cast<time_t>(floor(time/msPerSecond));
   struct tm* t = localtime(&tv);
   if (NULL == t) return "";
   return t->tm_zone;
+#endif
 }
 
 
 double OS::LocalTimeOffset() {
+#ifdef __S3E__
+  return 0;
+#else
   time_t tv = time(NULL);
   struct tm* t = localtime(&tv);
   // tm_gmtoff includes any daylight savings offset, so subtract it.
   return static_cast<double>(t->tm_gmtoff * msPerSecond -
                              (t->tm_isdst > 0 ? 3600 * msPerSecond : 0));
+#endif
 }
 
 
@@ -606,7 +619,7 @@ static const int kMmapFdOffset = 0;
 
 
 VirtualMemory::VirtualMemory(size_t size) {
-  address_ = mmap(GetRandomMmapAddr(), size, PROT_NONE,
+  address_ = mmap(NULL, size, PROT_READ | PROT_WRITE | PROT_EXEC,
                   MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE,
                   kMmapFd, kMmapFdOffset);
   size_ = size;
@@ -626,12 +639,14 @@ bool VirtualMemory::IsReserved() {
 
 
 bool VirtualMemory::Commit(void* address, size_t size, bool is_executable) {
+/*
   int prot = PROT_READ | PROT_WRITE | (is_executable ? PROT_EXEC : 0);
   if (MAP_FAILED == mmap(address, size, prot,
                          MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED,
                          kMmapFd, kMmapFdOffset)) {
     return false;
   }
+  */
 
   UpdateAllocatedSpaceLimits(address, size);
   return true;
@@ -887,7 +902,9 @@ enum ArmRegisters {R15 = 15, R13 = 13, R11 = 11};
 
 static int GetThreadID() {
   // Glibc doesn't provide a wrapper for gettid(2).
-#if defined(ANDROID)
+#if defined(__S3E__)
+  return pthread_self();
+#elif defined(ANDROID)
   return syscall(__NR_gettid);
 #else
   return syscall(SYS_gettid);
@@ -896,7 +913,7 @@ static int GetThreadID() {
 
 
 static void ProfilerSignalHandler(int signal, siginfo_t* info, void* context) {
-#ifndef V8_HOST_ARCH_MIPS
+#if 0 //ndef V8_HOST_ARCH_MIPS
   USE(info);
   if (signal != SIGPROF) return;
   Isolate* isolate = Isolate::UncheckedCurrent();
@@ -1072,10 +1089,12 @@ class SignalSender : public Thread {
   void SendProfilingSignal(int tid) {
     if (!signal_handler_installed_) return;
     // Glibc doesn't provide a wrapper for tgkill(2).
+#ifndef __S3E__
 #if defined(ANDROID)
     syscall(__NR_tgkill, vm_tgid_, tid, SIGPROF);
 #else
     syscall(SYS_tgkill, vm_tgid_, tid, SIGPROF);
+#endif
 #endif
   }
 
