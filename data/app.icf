@@ -18,3 +18,8 @@
 [s3e]
 SysConsole=1
 MemSize=50000000
+SysStackSize=500000
+#SysStackSwitch=0
+
+[commandline]
+argv[1]=run.js
