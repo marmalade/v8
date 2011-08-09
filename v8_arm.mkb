@@ -1,6 +1,6 @@
 #!/usr/bin/env mkb
 
-option x86
+option arm
 
 subproject v8
 

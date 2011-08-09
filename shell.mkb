@@ -3,6 +3,11 @@ library ".,v8"
 
 define S3E_NO_INLINE
 
+options
+{
+    arm-cpu=5t
+}
+
 includepath "upstream/include"
 
 files
